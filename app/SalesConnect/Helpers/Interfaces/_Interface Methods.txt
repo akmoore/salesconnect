@@ -1,0 +1,30 @@
+Interface Methods
+
+public function showAll(){
+	//return all records
+}
+
+public function showRecord($id){
+	//return a single record
+}
+
+public function createRecord($request){
+	//create a single record
+}
+
+public function updateRecord($request, $id){
+	//update a single record
+}
+
+public function deleteRecord($id){
+	//delete a single record
+}	
+
+-------------------
+
+Regular Expression for "Title"
+
+$regular_exp = /(\{\%.+\%\})/;
+
+preg_match($regular_exp, $request['comments'], $title);
+$noteTitle = $title[0];
