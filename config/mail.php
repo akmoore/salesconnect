@@ -17,6 +17,7 @@ return [
     */
 
     'driver' => env('MAIL_DRIVER', 'smtp'),
+    // 'driver' => 'smtp',
 
     /*
     |--------------------------------------------------------------------------
@@ -30,6 +31,7 @@ return [
     */
 
     'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+    // 'host' => 'mailtrap.io',
 
     /*
     |--------------------------------------------------------------------------
@@ -43,6 +45,7 @@ return [
     */
 
     'port' => env('MAIL_PORT', 587),
+    // 'port' => 2525,
 
     /*
     |--------------------------------------------------------------------------
@@ -57,7 +60,7 @@ return [
 
     'from' => [
         'address' => 'kmoore@brproud.com',
-        'name' => 'SalesConnect',
+        'name' => 'Ken Moore',
     ],
 
     /*
@@ -85,6 +88,7 @@ return [
     */
 
     'username' => env('MAIL_USERNAME'),
+    // 'username' => 'f0d33d2307f135',
 
     /*
     |--------------------------------------------------------------------------
@@ -98,6 +102,7 @@ return [
     */
 
     'password' => env('MAIL_PASSWORD'),
+    // 'password' => '2461f56da52534',
 
     /*
     |--------------------------------------------------------------------------
@@ -113,3 +118,10 @@ return [
     'sendmail' => '/usr/sbin/sendmail -bs',
 
 ];
+
+// MAIL_DRIVER=smtp
+// MAIL_HOST=mailtrap.io
+// MAIL_PORT=2525
+// MAIL_USERNAME=f0d33d2307f135
+// MAIL_PASSWORD=2461f56da52534
+// MAIL_ENCRYPTION=null

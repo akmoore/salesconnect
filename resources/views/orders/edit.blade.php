@@ -4,7 +4,7 @@
 	
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-8 col-sm-offset-2">
+			<div class="col-sm-10 col-sm-offset-1">
 				<ol class="breadcrumb">
 				  <li><a href="{{url('/home')}}">Dashboard</a></li>
 				  <li><a href="{{route('projects.index')}}">Projects</a></li>
@@ -14,9 +14,9 @@
 			</div>
 		</div>
 	    <div class="row">
-	        <div class="col-sm-8 col-sm-offset-2">
+	        <div class="col-sm-10 col-sm-offset-1">
 	            <div class="panel panel-default">
-	                <div class="panel-heading">Edit the P.O. <a href="{{route('projects.orders.pdf', [$project->slug, $order->id])}}" class="btn btn-sm btn-default pull-right">New Event</a></div>
+	                <div class="panel-heading">Edit the P.O. <a href="{{route('projects.orders.pdf', [$project->slug, $order->id])}}" class="btn btn-sm btn-default pull-right">View PDF</a></div>
 
 	                <div class="panel-body">
 	                    {!! Form::model($order, ['route' => ['projects.orders.update', $project->slug, $order->id], 'method'=>'PUT']) !!}

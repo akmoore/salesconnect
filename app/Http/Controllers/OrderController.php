@@ -102,6 +102,7 @@ class OrderController extends Controller
     public function pdf($project, $order){
 
         $info = $this->order->getPdfInfo($project, $order);
+        // return $info['agency'];
         // return $info['project']->client->agency;
 
         $html = view('orders.show', compact('info'))->render();

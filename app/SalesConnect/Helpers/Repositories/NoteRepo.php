@@ -4,6 +4,7 @@ namespace App\SalesConnect\Helpers\Repositories;
 
 use App\Note;
 use App\Project;
+use App\Events\NoteWasCreatedOrUpdated;
 use App\SalesConnect\Helpers\Interfaces\NoteInterface;
 
 class NoteRepo implements NoteInterface{
@@ -25,6 +26,7 @@ class NoteRepo implements NoteInterface{
 	}
 
 	public function createRecord($request){
+		$project = $this->getProject($request['project_id']);
 		$note = $this->note->create([
 			'project_id' => $request['project_id'],
 			'title' => $request['title'],
@@ -36,11 +38,13 @@ class NoteRepo implements NoteInterface{
 		]);
 
 		//Run Event if Emailable is true
+		event(new NoteWasCreatedOrUpdated($note, $project));
 
 		return $note;
 	}
 
 	public function updateRecord($request, $id){
+		$project = $this->getProject($request['project_id']);
 		$note = $this->note->findOrFail($id);
 		$note->update([
 			'project_id' => $request['project_id'],
@@ -52,11 +56,13 @@ class NoteRepo implements NoteInterface{
 			'has_been_emailed' => $note->has_been_emailed ? 1 : 0
 		]);
 
-		if($request['emailable'] === '1'){
-			return "Run an event to run a chronjob to email this note out";
-		}
+		// if($request['emailable'] === '1'){
+		// 	return "Run an event to run a chronjob to email this note out";
+		// }
 
-		// return $note;
+		event(new NoteWasCreatedOrUpdated($note, $project));
+
+		return $note;
 	}
 
 	public function deleteRecord($id){
@@ -73,6 +79,10 @@ class NoteRepo implements NoteInterface{
 	}	
 
 	public function getProject($id){
-		return $this->project->whereSlug($id)->firstOrfail();
+		if(is_numeric($id)){
+			return $this->project->with('client', 'client.aes', 'client.agency')->findOrFail($id);
+		}else{
+			return $this->project->with('client')->whereSlug($id)->firstOrFail();
+		}
 	}
 }

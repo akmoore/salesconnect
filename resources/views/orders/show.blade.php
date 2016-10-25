@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Oxygen Invoice</title>
+  <title>{!! $info['title'] !!}</title>
 
   <style type="text/css">
     /* Take care of image borders and formatting, client hacks */
@@ -181,7 +181,7 @@
         <table cellspacing="0" cellpadding="0" width="500" class="w320">
           <tbody><tr>
             <td class="header-lg">
-              Production Order {{Carbon\Carbon::now()->year}}
+              Production Order {{$info['year']}}
             </td>
           </tr>
 
@@ -200,15 +200,11 @@
                           <table cellspacing="0" cellpadding="0" width="90%" style="border-collapse:separate !important;">
                             <tbody><tr>
                               <td class="mini-block">
-                                <strong>Agency:</strong> {{$info['project']->client->agency ? $info['project']->client->agency->agency_name : 'N/A'}}<br>
-                                <strong>Advertiser:</strong> {{$info['project']->client->company_name}}<br>
+                                <strong>Agency:</strong> {{$info['agency']}}<br>
+                                <strong>Advertiser:</strong> {{$info['advertiser']}}<br>
                                 <strong>Salesperson:</strong>
-                                  @foreach($info['project']->client->aes as $ae)
-                                    @if($loop->last)
-                                      {{$ae->full_name}}
-                                    @else
-                                      {{$ae->full_name}},
-                                    @endif
+                                  @foreach($info['salesperson'] as $ae)
+                                    {{$ae}}
                                   @endforeach
                                 <br>
                               </td>
@@ -225,15 +221,9 @@
                           <table cellspacing="0" cellpadding="0" width="90%" style="border-collapse:separate !important;">
                             <tbody><tr>
                               <td class="mini-block">
-                                <strong>Date of Order:</strong> {{$info['project']->start_date->format('M d, Y')}}<br>
-                                <strong>Date Completed:</strong> 
-                                  @if($info['project']->end_date)
-                                    {{$info['project']->end_date->format('M d, Y')}}
-                                  @else
-                                    Not Completed
-                                  @endif
-                                <br>
-                                <strong>Editor:</strong> Ken<br>
+                                <strong>Date of Order:</strong> {{$info['date_of_order']}}<br>
+                                <strong>Date Completed:</strong> {{$info['date_completed']}}<br>
+                                <strong>Editor:</strong> {{$info['editor']}}<br>
                               </td>
                             </tr>
                           </tbody></table>
@@ -255,29 +245,22 @@
                         <tr>
                           <td style="text-align: left;padding: 10px 0px 0px 15px;" width="242" >
                             <span class="header-sm">Client's Info</span><br>
-                            @if($info['project']->client->contact_full_name)
-                              <strong>POC:</strong> {{$info['project']->client->contact_full_name}}<br>
-                            @endif
-                            {{$info['project']->client->street}}<br>
-                            {{$info['project']->client->city . ','}} {{$info['project']->client->state}} {{$info['project']->client->postal}} <br>
-                            {{$info['project']->client->public_phone}} <br>
-                            {{$info['project']->client->primary_contact_email}}
+                            <strong>POC:</strong> {{$info['client_info']['poc']}}<br>
+                            {{$info['client_info']['street']}}<br>
+                            {{$info['client_info']['city'] . ','}} {{$info['client_info']['state']}} {{$info['client_info']['postal']}} <br>
+                            {{$info['client_info']['poc_phone']}} <br>
+                            {{$info['client_info']['poc_email']}}
                           </td>
                           <td  style="text-align: left;">
                             <span class="header-sm">Internal Data</span><br>
                             <strong>Manager:</strong> 
-                              <?php $managers = $info['project']->client->aes->map(function($ae){return $ae->manager->full_name;})->unique() ?>
-                              @foreach($managers as $manager)
-                                @if($loop->last)
-                                  {{$manager}}
-                                @else
-                                  {{$manager}},
-                                @endif
+                              @foreach($info['internal_data']['manager'] as $manager)
+                              {{$manager}}
                               @endforeach
                             <br>
-                            <strong>Production Free:</strong> {{$info['project']->production_free ? 'Yes' : 'No'}}<br> 
-                            <strong>Promotional:</strong> {{$info['project']->production_promotional ? 'Yes' : 'No'}}<br>
-                            <strong>Produced By:</strong> {{$info['project']->air_date->format('M d, Y')}}
+                            <strong>Production Free:</strong> {{$info['internal_data']['production_free']}}<br> 
+                            <strong>Promotional:</strong> {{$info['internal_data']['promotional']}}<br>
+                            <strong>Produced By:</strong> {{$info['internal_data']['produced_by']}}
                           </td>
                         </tr>
                       </table>
@@ -290,8 +273,7 @@
                         <tr>
                           <td width="457" style="padding: 15px 15px 10px 15px; text-align: left;">
                             <span class="header-sm">Description</span><br>
-                            <?php $comments = $info['project']->notes->filter(function($project){return $project->primary === 1;})->pluck('comments') ?>
-                            {{$comments[0]}}
+                            {{$info['description']}}
                           </td>
                         </tr>
                       </table>
@@ -333,122 +315,109 @@
 
                   <tr>
                     <td class="item-col item">
-                      @if($info['project']->events)
-                        @if($edit_exists = $info['project']->events->filter(function($event){return $event->event_type == 'edit';}))
-                          {{$edit_exists->sortBy('event_date')->last()->event_date->format('m/d/Y')}}
-                        @endif
-                      @endif
+                      {{$info['table']['editing']['date']}}
                     </td>
                     <td class="item-col item">
-                      Editing
+                      Editing <small>(Premiere & After Effects)</small>
                     </td>
                     <td class="item-col item">
-                      {{$edit_hours = $info['project']->events->filter(function($event){return $event->event_type == 'edit';})->map(function($event){return $event->duration_hours;})->sum()}} {{str_plural('hr', $edit_hours)}}
+                      {{$info['table']['editing']['duration']}} {{str_plural('hr', $info['table']['editing']['duration'])}}
                     </td>
                     <td class="item-col quantity">
                       $150/hr
                     </td>
                     <td class="item-col price">
-                      <?php setlocale(LC_MONETARY, 'en_US.UTF-8'); ?> 
-                      {{money_format('%n', $editing = 150 * $edit_hours)}}
+                      {{$info['table']['editing']['display_total_charge']}}
                     </td>
                   </tr>
 
                   <tr>
                     <td class="item-col item">
-                      @if($info['project']->events)
-                        @if($location_exists = $info['project']->events->filter(function($event){return $event->event_type == 'shoot' && $event->location != 'green-screen';}))
-                          {{$location_exists->sortBy('event_date')->last()->event_date->format('m/d/Y')}}
-                        @endif
-                      @endif
+                      {{$info['table']['location']['date']}}
                     </td>
                     <td class="item-col item">
                       Location
                     </td>
                     <td class="item-col item">
-                      {{$location_hours = $info['project']->events->filter(function($event){return $event->event_type == 'shoot' && $event->location != 'green-screen';})->map(function($event){return $event->duration_hours;})->sum()}} {{str_plural('hr', $location_hours)}}
+                      {{$info['table']['location']['duration']}} {{str_plural('hr', $info['table']['location']['duration'])}}
                     </td>
                     <td class="item-col quantity">
                       $150/hr
                     </td>
                     <td class="item-col price">
-                      {{money_format('%n', $location = 150 * $location_hours)}}
+                      {{$info['table']['location']['display_total_charge']}}
                     </td>
                   </tr>
                   
                   <tr>
                     <td class="item-col item">
-                      {{$info['order']->dvd_date ? $info['order']->dvd_date->format('m/d/Y') : ''}}
+                      {{$info['table']['dvd']['date']}}
                     </td>
                     <td class="item-col item">
                       DVD
                     </td>
                     <td class="item-col item">
-                      {{$info['order']->dvd}}
+                      {{$info['table']['dvd']['count']}}
                     </td>
                     <td class="item-col quantity">
                       $25
                     </td>
                     <td class="item-col price">
-                      {{money_format('%n', $dvd = 25 * $info['order']->dvd)}}
+                      {{$info['table']['dvd']['display_total_charge']}}
                     </td>
                   </tr>
 
                   <tr>
                     <td class="item-col item">
-                      {{$info['order']->crawl_date ? $info['order']->crawl_date->format('m/d/Y') : ''}}
+                      {{$info['table']['crawl']['date']}}
                     </td>
                     <td class="item-col item">
                       Tag/Crawl/add Text
                     </td>
                     <td class="item-col item">
-                      {{$info['order']->crawl}}
+                      {{$info['table']['crawl']['count']}}
                     </td>
                     <td class="item-col quantity">
                       $50
                     </td>
                     <td class="item-col price">
-                      {{money_format('%n', $crawl = 50 * $info['order']->crawl)}}
+                      {{$info['table']['crawl']['display_total_charge']}}
                     </td>
                   </tr>
 
                   <tr>
                     <td class="item-col item">
-                      @if($info['project']->events)
-                        @if($green_exists = $info['project']->events->filter(function($event){return $event->event_type == 'shoot' && $event->location == 'green-screen';}))
-                          {{$green_exists->sortBy('event_date')->last()->event_date->format('m/d/Y')}}
-                        @endif
-                      @endif
+                      {{$info['table']['green_screen']['date']}}
                     </td>
                     <td class="item-col item">
                       Green Screen
                     </td>
                     <td class="item-col item">
-                      {{$green_screen_hours = $info['project']->events->filter(function($event){return $event->event_type == 'shoot' && $event->location == 'green-screen';})->map(function($event){return $event->duration_hours;})->sum()}} {{str_plural('hr', $green_screen_hours)}}
+                      {{$info['table']['green_screen']['duration']}}  {{str_plural('hr', $info['table']['green_screen']['duration'])}}
                     </td>
                     <td class="item-col quantity">
                       $150
                     </td>
                     <td class="item-col price">
-                      {{money_format('%n', $green_screen = 150 * $green_screen_hours)}}
+                      {{$info['table']['green_screen']['display_total_charge']}}
                     </td>
                   </tr>
 
                   <tr>
                     <td class="item-col item">
-                      {{$info['order']->music_library_date ? $info['order']->music_library_date->format('m/d/Y') : ''}}
+                      {{$info['table']['music_library']['date']}}
                     </td>
                     <td class="item-col item">
                       Music Library
                     </td>
                     <td class="item-col item">
-                      {{$info['order']->music_library}}
+                      {{$info['table']['music_library']['count']}}
                     </td>
                     <td class="item-col quantity">
                       $25
                     </td>
                     <td class="item-col price">
-                      {{money_format('%n', $music_library = 25 * $info['order']->music_library)}}
+                      {{$info['table']['music_library']['display_total_charge']}}
                     </td>
                   </tr>
 
@@ -470,7 +439,7 @@
                     </td>
                     <td class="item-col price" style="text-align: left; border-top: 1px solid #cccccc;">
                       <span class="total-space">
-                        {{money_format('%n', collect([$editing,$location,$dvd,$crawl,$green_screen,$music_library])->sum())}}
+                        {{$info['table']['display_total_work_amount']}}
                       </span> <br>
                       <span class="total-space">$</span>  <br>
                       <span class="total-space" style="font-weight:bold; color: #4d4d4d">$</span>

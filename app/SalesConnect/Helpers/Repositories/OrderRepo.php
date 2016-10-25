@@ -8,8 +8,11 @@ use App\Events\OrderWasUpdated;
 use App\SalesConnect\Helpers\Interfaces\OrderInterface;
 
 use Vsmoraes\Pdf\Pdf;
+use App\SalesConnect\Helpers\OrderHelperTrait;
 
 class OrderRepo implements OrderInterface{
+
+	use OrderHelperTrait;
 
 	public $order;
 	public $project;
@@ -68,7 +71,8 @@ class OrderRepo implements OrderInterface{
 		$proj = $this->project->with('client.aes.manager', 'client.agency', 'notes', 'events')->whereSlug($project)->first();
 		$ord = $this->showRecord($order);
 
-		return ['project' => $proj, 'order' => $ord];
+		return $this->poFields($proj, $ord);
+		// return ['project' => $proj, 'order' => $ord];
 	}
 
 }

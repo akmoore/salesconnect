@@ -23,7 +23,7 @@ class CalendarController extends Controller
      */
     public function index()
     {
-        //
+        //Show the Calendar Here
     }
 
     /**
@@ -46,6 +46,7 @@ class CalendarController extends Controller
     public function store(CalendarRequest $request, $project)
     {
         // return ['request' => $request->all(), 'project' => $project];
+        // return $this->event->createRecord($request);
         if(!$event = $this->event->createRecord($request)) return redirect()->back();
         return redirect()->route('projects.show', $project);
 

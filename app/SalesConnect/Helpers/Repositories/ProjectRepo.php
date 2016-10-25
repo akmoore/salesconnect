@@ -98,15 +98,15 @@ class ProjectRepo implements ProjectInterface{
 		$videoExt = $request->file('video')->getClientOriginalExtension();
 		$videoName = str_slug($request['video_title']).'.'.$videoExt;
 
-		$aws = Storage::disk('s3')->put($this->getFilePath($videoName), file_get_contents($videoPath));
+		// $aws = Storage::disk('s3')->put($this->getFilePath($videoName), file_get_contents($videoPath));
 
-		// $video = \Youtube::upload($request->video->path(),[
-		// 	'title' => $request['video_title'],
-		// 	'description' => $request['description']
-		// ], 'unlisted');
+		$video = \Youtube::upload($request->video->path(),[
+			'title' => $request['video_title'],
+			'description' => $request['description']
+		], 'unlisted');
 
-		// $proj->youtube_link = $video->getVideoId();
-		// $proj->save();
+		$proj->youtube_link = $video->getVideoId();
+		$proj->save();
 
 		return 'true';
 

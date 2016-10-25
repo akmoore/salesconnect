@@ -4,7 +4,7 @@
 	
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-8 col-sm-offset-2">
+			<div class="col-sm-10 col-sm-offset-1">
 				<ol class="breadcrumb">
 				  <li><a href="{{url('/home')}}">Dashboard</a></li>
 				  <li><a href="{{route('projects.index')}}">Projects</a></li>
@@ -14,7 +14,7 @@
 			</div>
 		</div>
 	    <div class="row">
-	        <div class="col-sm-8 col-sm-offset-2">
+	        <div class="col-sm-10 col-sm-offset-1">
 	            <div class="panel panel-default">
 	                <div class="panel-heading">Create a New Note</div>
 
@@ -40,7 +40,16 @@
 	                        	<div class="col-sm-6">
 	                        		<div class="form-group {{$errors->has('emailable')? 'has-error':''}}">
 	                        		    {!! Form::label('emailable', 'Email Note?') !!}
-	                        		    {!! Form::select('emailable', [0=>'No',1=>'Yes'], null, ['class' => 'form-control']) !!}
+	                        		    {!! Form::select('emailable', [0=>'No',1=>'Yes'], null, ['class' => 'form-control email-note']) !!}
+	                        		</div>
+	                        	</div>
+	                        </div>
+
+	                        <div class="row recipients" style="display: none;">
+	                        	<div class="col-sm-12">
+	                        		<div class="form-group {{$errors->has('recipients')? 'has-error':''}}">
+	                        		    {!! Form::label('recipients', 'Recipients (Sent automatically to Client POC & AE)') !!}
+	                        		    {!! Form::text('recipients', null, ['class' => 'form-control']) !!}
 	                        		</div>
 	                        	</div>
 	                        </div>
@@ -106,6 +115,14 @@
 				        ['fullscreen']
 				    ]
 			});
+
+			var emailNote = $('.email-note'),
+				recipients = $('.recipients');
+			
+			emailNote.change(function(){
+			    emailNote.val() != 0 ? recipients.css('display', 'block') : recipients.css('display', 'none');
+			});
+
 		})();
 	</script>
 @endsection

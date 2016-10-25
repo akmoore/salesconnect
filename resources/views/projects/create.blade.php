@@ -4,7 +4,7 @@
 	
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-8 col-sm-offset-2">
+			<div class="col-sm-10 col-sm-offset-1">
 				<ol class="breadcrumb">
 				  <li><a href="{{url('/home')}}">Dashboard</a></li>
 				  <li><a href="{{route('projects.index')}}">Projects</a></li>
@@ -13,7 +13,7 @@
 			</div>
 		</div>
 	    <div class="row">
-	        <div class="col-sm-8 col-sm-offset-2">
+	        <div class="col-sm-10 col-sm-offset-1">
 	            <div class="panel panel-default">
 	                <div class="panel-heading">Create a Project</div>
 
@@ -23,7 +23,7 @@
 	                        	<div class="col-sm-12">
 	                        		<div class="form-group {{$errors->has('client_id')? 'has-error':''}}">
 	                        		    {!! Form::label('client_id', 'Select Client') !!}
-	                        		    {!! Form::select('client_id', $resources['clients'], null, ['class' => 'form-control']) !!}
+	                        		    {!! Form::select('client_id', $resources['clients'], $client, ['class' => 'form-control']) !!}
 	                        		</div>
 	                        	</div>
 	                        </div>

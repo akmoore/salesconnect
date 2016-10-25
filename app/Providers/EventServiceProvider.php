@@ -20,6 +20,12 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\OrderWasUpdated' => [
             'App\Listeners\Orders\UpdateDates'
+        ],
+        'App\Events\CalendarEventCreated' => [
+            'App\Listeners\Calendar\SendEmail'
+        ],
+        'App\Events\NoteWasCreatedOrUpdated' => [
+            'App\Listeners\Notes\SendNotesEmail'
         ]
     ];
 

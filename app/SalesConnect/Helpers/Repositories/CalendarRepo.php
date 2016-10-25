@@ -5,6 +5,7 @@ namespace App\SalesConnect\Helpers\Repositories;
 use Carbon\Carbon;
 use App\Calendar;
 use App\Project;
+use App\Events\CalendarEventCreated;
 use App\SalesConnect\Helpers\EventHelperTrait;
 use App\SalesConnect\Helpers\Interfaces\CalendarInterface;
 
@@ -30,6 +31,16 @@ class CalendarRepo implements CalendarInterface{
 	}
 
 	public function createRecord($request){
+		$project = $this->getProject($request['project_id']);
+		// $emailsArray = [
+		//     'ak_moore@live.com',
+		//     $project->client->primary_contact_email,
+		//     $project->client->aes->map(function($ae){return $ae->email;}),
+		//     $project->client->agency ? $project->client->agency->contact_email : ''
+		// ];
+		// return $emails = collect($emailsArray)->flatten()->filter(function($email){return $email != '';});
+
+
 		$eventData = $this->convertedEventData($request);
 		$duration = $this->timeDuration($eventData);
 		if($this->checkEventConflict($eventData)) return false;
@@ -47,11 +58,14 @@ class CalendarRepo implements CalendarInterface{
 			'notes' => $request['notes']
 		]);	
 
+		event(new CalendarEventCreated($event, $project));
+
 		return $event;
 	}
 
 	public function updateRecord($request, $id){
 		// return $id;
+		$project = $this->getProject($request['project_id']);
 		$event = $this->event->find($id);
 		$eventData = $this->convertedEventData($request);
 		$duration = $this->timeDuration($eventData);
@@ -71,6 +85,8 @@ class CalendarRepo implements CalendarInterface{
 			'notes' => $request['notes']
 		]);
 
+		event(new CalendarEventCreated($event, $project));
+
 		return $event;
 	}
 
@@ -82,7 +98,11 @@ class CalendarRepo implements CalendarInterface{
 	}
 
 	public function getProject($id){
-		return $this->project->whereSlug($id)->firstOrFail();
+		if(is_numeric($id)){
+			return $this->project->with('client', 'client.aes', 'client.agency')->findOrFail($id);
+		}else{
+			return $this->project->with('client')->whereSlug($id)->firstOrFail();
+		}
 	}
 
 	//Internal Methods to Work with Dates and Times

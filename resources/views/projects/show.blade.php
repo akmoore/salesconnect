@@ -3,7 +3,7 @@
 @section('content')
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-8 col-sm-offset-2">
+			<div class="col-sm-10 col-sm-offset-1">
 				<ol class="breadcrumb">
 				  <li><a href="{{url('/home')}}">Dashboard</a></li>
 				  <li><a href="{{route('projects.index')}}">Projects</a></li>
@@ -14,7 +14,7 @@
 		</div>
 
 		<div class="row">
-			<div class="col-sm-8 col-sm-offset-2" style="margin-bottom:20px;">
+			<div class="col-sm-10 col-sm-offset-1" style="margin-bottom:20px;">
 				<a href="{{route('projects.edit', $project->slug)}}" class="btn btn-default" style="margin-right:10px;">Edit Record</a>
 				{!! Form::open(['route' => ['projects.destroy', $project->id], 'method' => 'DELETE', 'class' => 'delete', 'style' => 'margin:0; padding:0;display:inline;']) !!}
 					{{Form::button('<i class="glyphicon glyphicon-remove"></i>', array('type' => 'submit', 'class' => 'btn btn-danger'))}}
@@ -23,7 +23,7 @@
 		</div>
 
 	    <div class="row">
-	        <div class="col-sm-8 col-sm-offset-2">
+	        <div class="col-sm-10 col-sm-offset-1">
 	            <div class="panel panel-primary">
 	                <div class="panel-heading">
 	                	<strong>{{$project->title}}</strong>
@@ -126,7 +126,7 @@
 	    </div>
 
 	    <div class="row">
-	        <div class="col-sm-8 col-sm-offset-2">
+	        <div class="col-sm-10 col-sm-offset-1">
 	            <div class="panel panel-default">
 	                <div class="panel-heading clearfix">Events <a href="{{route('projects.events.create', $project->slug)}}" class="btn btn-sm btn-default pull-right">New Event</a></div>
 	                <div class="panel-body">
@@ -182,7 +182,7 @@
 	    </div>
 
 	    <div class="row">
-	        <div class="col-sm-8 col-sm-offset-2">
+	        <div class="col-sm-10 col-sm-offset-1">
 	            <div class="panel panel-default">
 	                <div class="panel-heading clearfix">Notes <a href="{{route('projects.notes.create', $project->slug)}}" class="btn btn-sm btn-default pull-right">New Note</a></div>
 	                <div class="panel-body">
