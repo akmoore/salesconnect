@@ -273,7 +273,7 @@
                         <tr>
                           <td width="457" style="padding: 15px 15px 10px 15px; text-align: left;">
                             <span class="header-sm">Description</span><br>
-                            {{$info['description']}}
+                            {!! $info['description'] !!}
                           </td>
                         </tr>
                       </table>

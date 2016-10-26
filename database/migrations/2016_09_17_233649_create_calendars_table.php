@@ -25,6 +25,8 @@ class CreateCalendarsTable extends Migration
             $table->string('location');
             $table->string('address');
             $table->text('notes');
+            $table->boolean('emailed')->default(0);
+            $table->dateTime('emailed_at')->nullable();
             $table->timestamps();
         });
     }

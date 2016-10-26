@@ -1,7 +1,8 @@
 <?php
 
 use App\Mail\EventWasCreatedMail;
-
+use App\SalesConnect\Helpers\Commands\EventEmailReminderCommandHelper as EventEmail;
+use App\Calendar;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,6 +33,10 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('projects.events', 'CalendarController');
 	Route::resource('projects.orders', 'OrderController');
 	Route::get('projects/{project}/orders/{order}/pdf', ['as' => 'projects.orders.pdf', 'uses' => 'OrderController@pdf']);
+	// Route::get('cron', function(){
+	// 	$event = new EventEmail();
+	// 	return $event->emailReminder();
+	// });
 });
 
 

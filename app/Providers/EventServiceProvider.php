@@ -26,6 +26,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\NoteWasCreatedOrUpdated' => [
             'App\Listeners\Notes\SendNotesEmail'
+        ],
+        'App\Events\EmailCalendarEventOneDayOut' => [
+            'App\Listeners\Calendar\SendOneDayOutEmail'
         ]
     ];
 
