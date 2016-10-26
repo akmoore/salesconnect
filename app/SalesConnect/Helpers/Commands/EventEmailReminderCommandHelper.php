@@ -11,17 +11,23 @@ class EventEmailReminderCommandHelper {
 
 	public $event;
 
+	public function __construct(Calendar $event){
+		$this->event = $event;
+	}
+
 	public function emailReminder(){
+		// dd('Email Reminder');
 		$now = Carbon::now('America/Chicago');
-		$events = (new \App\Calendar())->with('project', 'project.client.aes', 'project.client.agency')
+		$events = $this->event->with('project', 'project.client.aes', 'project.client.agency')
 									   ->whereEmailed(0)
 									   ->whereEmailedAt(null)
 									   ->get()
 									   ->filter(function($event) use ($now){
 									   		$ed = $event->event_date->timezone('America/Chicago');
-									   		$edDiff = $ed->diffInHours($now);
-									   		return $edDiff >= 30 && $edDiff <= 41;
+									   		$edDiff = $ed->diffInDays($now);
+									   		return $edDiff == 2;
 									   });
+		// dd($events);
 
 		foreach ($events as $event) {
 			$recipients = [

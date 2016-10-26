@@ -21,7 +21,7 @@ class EmailEventReminder extends Command
      */
     protected $description = 'Will email a reminder a day before the event.';
 
-    protected $command_helper;
+    public $command_helper;
 
     /**
      * Create a new command instance.
