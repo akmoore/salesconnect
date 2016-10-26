@@ -33,24 +33,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('projects.events', 'CalendarController');
 	Route::resource('projects.orders', 'OrderController');
 	Route::get('projects/{project}/orders/{order}/pdf', ['as' => 'projects.orders.pdf', 'uses' => 'OrderController@pdf']);
-	// Route::get('cron', function(){
-	// 	$event = new EventEmail();
-	// 	return $event->emailReminder();
-	// });
+
 });
 
 
-// Route::get('/make', function(){
-// 	$user = App\User::create([
-// 		'first_name' => 'Alfred',
-// 		'last_name' => 'Moore',
-// 		'email' => 'ak_moore@live.com',
-// 		'slug' => 'alfred-moore',
-// 		'work_phone' => '225-288-9870',
-// 		'cell_phone' => '225-288-9870',
-// 		'password' => bcrypt('password'),
-// 		'type' => 'admin'
-// 	]);
-
-// 	return $user;
-// });
