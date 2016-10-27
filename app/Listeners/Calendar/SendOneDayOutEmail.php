@@ -35,6 +35,11 @@ class SendOneDayOutEmail implements ShouldQueue
 
         foreach($combine as $name => $email){
             \Mail::to($email)->queue(new EventReminderEmail($event->event, $name));
+
+            // dd($event->event->emailed);
+            // $event->event->emailed = 1;
+            // $event->event->emailed_at = Carbon\Carbon::now();
+            // $event->event->save();
         }
         
     }

@@ -33,7 +33,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('projects.events', 'CalendarController');
 	Route::resource('projects.orders', 'OrderController');
 	Route::get('projects/{project}/orders/{order}/pdf', ['as' => 'projects.orders.pdf', 'uses' => 'OrderController@pdf']);
-
+	Route::get('/message', ['as' => 'send.message', 'uses' => 'Messages@sendMessage']);
 });
 
 

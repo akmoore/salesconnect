@@ -12,7 +12,8 @@
         "vsmoraes/laravel-pdf": "^1.0",
         "dawson/youtube": "^1.1",
         "league/flysystem-aws-s3-v3": "~1.0",
-        "guzzlehttp/guzzle": "^6.2"
+        "guzzlehttp/guzzle": "^6.2",
+        "twilio/sdk": "^5.4"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
