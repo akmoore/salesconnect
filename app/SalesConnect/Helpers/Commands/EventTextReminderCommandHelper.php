@@ -42,7 +42,10 @@ class EventTextReminderCommandHelper {
 							   		// dd($phone_numbers);
 							   		// dd('Hello');
 							   		// return $rep;
-							   		event(new TextCalendarEventOneHourOut($event, $phone_numbers));
+							   		if($event->texted == 0){
+							   			event(new TextCalendarEventOneHourOut($event, $phone_numbers));
+							   		}
+							   		
 							   });
 		// dd($phone_numbers[12]);
 		// return $events;
