@@ -15,16 +15,18 @@ class EventWasCreatedMail extends Mailable
 
     public $event;
     public $project;
+    public $person;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($event, $project)
+    public function __construct($event, $project, $person)
     {
-        $this->event = $event;
-        $this->project = $project;
+        $this->event    = $event;
+        $this->project  = $project;
+        $this->person   = $person;
     }
 
     /**

@@ -6,14 +6,17 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Requests\AgencyRequest;
+use App\SalesConnect\Helpers\FlashMessageHelper;
 use App\SalesConnect\Helpers\Interfaces\AgencyInterface;
 
 class AgencyController extends Controller
 {
     protected $agency;
+    protected $flash;
 
-    public function __construct(AgencyInterface $agency){
+    public function __construct(AgencyInterface $agency, FlashMessageHelper $flash){
         $this->agency = $agency;
+        $this->flash = $flash;
     }
 
     /**
@@ -46,7 +49,8 @@ class AgencyController extends Controller
     public function store(AgencyRequest $request)
     {
         $agency = $this->agency->createRecord($request);
-        return redirect()->route('agencies.index');
+        return redirect()->route('agencies.index')
+                         ->with($this->flash->created($agency->agency_name));
     }
 
     /**
@@ -83,7 +87,8 @@ class AgencyController extends Controller
     public function update(AgencyRequest $request, $id)
     {
         $agency = $this->agency->updateRecord($request, $id);
-        return redirect()->route('agencies.show', $agency->slug);
+        return redirect()->route('agencies.show', $agency->slug)
+                         ->with($this->flash->updated($agency->agency_name));
     }
 
     /**
@@ -98,7 +103,8 @@ class AgencyController extends Controller
 
         if(!$agency) return redirect()->back();
 
-        return redirect()->route('agencies.index');
+        return redirect()->route('agencies.index')
+                         ->with($this->flash->deleted($agency->agency_name));
 
     }
 }

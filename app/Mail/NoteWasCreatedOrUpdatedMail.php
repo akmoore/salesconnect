@@ -32,6 +32,7 @@ class NoteWasCreatedOrUpdatedMail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.notes.created');
+        $subject = "Notes from WVLA/WGMB - " . $this->note->title;
+        return $this->view('emails.notes.created')->subject($subject);
     }
 }

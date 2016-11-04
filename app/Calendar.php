@@ -3,10 +3,13 @@
 namespace App;
 
 use Carbon\Carbon;
+use App\SalesConnect\Helpers\Attributes\CalendarAttributes;
 use Illuminate\Database\Eloquent\Model;
 
 class Calendar extends Model
 {
+	use CalendarAttributes;
+
     protected $fillable = [
     	'project_id', 'event_date', 'event_start_time',
     	'event_end_time', 'event_type', 'location',
@@ -14,19 +17,17 @@ class Calendar extends Model
     	'address'
     ];
 
-    protected $dates = ['event_date'];
+    protected $dates = ['event_date', 'start_date_timestamp', 'end_date_timestamp', ];
 
-    public function getConvertedEventStartTimeAttribute(){
-    	$startTimeArray = explode(':', $this->event_start_time);
-		$startTime = Carbon::createFromTime($startTimeArray[0], $startTimeArray[1], $startTimeArray[2]);
-		return $startTime->format('g:i A');
-    }
-
-    public function getConvertedEventEndTimeAttribute(){
-    	$endTimeArray = explode(':', $this->event_end_time);
-		$endTime = Carbon::createFromTime($endTimeArray[0], $endTimeArray[1], $endTimeArray[2]);
-		return $endTime->format('g:i A');
-    }
+    protected $appends = [
+		'start_date_time_millisecond', 
+		'end_date_time_millisecond', 
+		'class_color',
+		'start_date_time',
+		'end_date_time',
+		'start_date_timestamp',
+		'end_date_timestamp'
+	];
 
     //Relationships
 

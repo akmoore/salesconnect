@@ -5,9 +5,11 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 
+use App\SalesConnect\Helpers\PhoneHelperTrait;
+
 class Agency extends Model
 {
-	use Sluggable;
+	use Sluggable, PhoneHelperTrait;
 
     public function sluggable()
     {
@@ -24,8 +26,14 @@ class Agency extends Model
     	'contact_phone'
     ];
 
+    protected $appends = ['contact_phone_callable'];
+
     public function getContactFullNameAttribute(){
     	return $this->contact_first_name . ' ' . $this->contact_last_name;
+    }
+
+    public function getContactPhoneCallableAttribute(){
+        return $this->transformPhoneNumber($this->contact_phone);
     }
 
     //Relationships

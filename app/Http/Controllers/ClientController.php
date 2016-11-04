@@ -8,6 +8,7 @@ use App\Ae;
 use App\Agency;
 use App\Http\Requests;
 use App\Http\Requests\ClientRequest;
+use App\SalesConnect\Helpers\FlashMessageHelper as Flash;
 use App\SalesConnect\Helpers\Interfaces\ClientInterface;
 
 class ClientController extends Controller
@@ -15,11 +16,13 @@ class ClientController extends Controller
     protected $client;
     protected $ae;
     protected $agency;
+    protected $flash;
 
-    public function __construct(ClientInterface $client, Ae $ae, Agency $agency){
+    public function __construct(ClientInterface $client, Ae $ae, Agency $agency, Flash $flash){
         $this->client = $client;
         $this->ae = $ae;
         $this->agency = $agency;
+        $this->flash = $flash;
     }
 
     /**
@@ -54,7 +57,8 @@ class ClientController extends Controller
     {
         // return $request->all();
         $client = $this->client->createRecord($request);
-        return redirect()->route('clients.show', $client->slug);
+        return redirect()->route('clients.show', $client->slug)
+                         ->with($this->flash->created($client->company_name));
     }
 
     /**
@@ -92,7 +96,8 @@ class ClientController extends Controller
     public function update(ClientRequest $request, $id)
     {
         $client = $this->client->updateRecord($request, $id);
-        return redirect()->route('clients.show', $client->slug);
+        return redirect()->route('clients.show', $client->slug)
+                         ->with($this->flash->updated($client->company_name));
     }
 
     /**
@@ -104,7 +109,7 @@ class ClientController extends Controller
     public function destroy($id)
     {
         $client = $this->client->deleteRecord($id);
-        return redirect()->route('clients.index');
+        return redirect()->route('clients.index')->with($this->flash->deleted($client->company_name));
     }
 
     public function getResources($client = null){

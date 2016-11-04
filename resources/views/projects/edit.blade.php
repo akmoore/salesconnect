@@ -40,7 +40,7 @@
 	                        	<div class="col-sm-3">
 	                        		<div class="form-group {{$errors->has('new_client')? 'has-error':''}}">
 	                        		    {!! Form::label('new_client', 'New Client&#63;') !!}
-	                        		    {!! Form::select('new_client', [1 => 'Yes', 0 => 'No'], 0, ['class' => 'form-control']) !!}
+	                        		    {!! Form::select('new_client', [0 => 'No', 1 => 'Yes'], null, ['class' => 'form-control']) !!}
 	                        		</div>
 	                        	</div>
 	                        </div>
@@ -64,19 +64,19 @@
 	                        	<div class="col-sm-3">
 	                        		<div class="form-group {{$errors->has('length')? 'has-error':''}}">
 	                        		    {!! Form::label('length', 'Length') !!}
-	                        		    {!! Form::select('length', $resources['length'], 30, ['class' => 'form-control']) !!}
+	                        		    {!! Form::select('length', $resources['length'], $project->length ? null : 30, ['class' => 'form-control']) !!}
 	                        		</div>
 	                        	</div>
 	                        	<div class="col-sm-3">
 	                        		<div class="form-group {{$errors->has('production_free')? 'has-error':''}}">
 	                        		    {!! Form::label('production_free', 'Free&#63;') !!}
-	                        		    {!! Form::select('production_free', [1 => 'Yes', 0 => 'No'], 1, ['class' => 'form-control']) !!}
+	                        		    {!! Form::select('production_free', [1 => 'Yes', 0 => 'No'], null, ['class' => 'form-control']) !!}
 	                        		</div>
 	                        	</div>
 	                        	<div class="col-sm-3">
 	                        		<div class="form-group {{$errors->has('production_promotional')? 'has-error':''}}">
 	                        		    {!! Form::label('production_promotional', 'Promotional&#63;') !!}
-	                        		    {!! Form::select('production_promotional', [1 => 'Yes', 0 => 'No'], 0, ['class' => 'form-control']) !!}
+	                        		    {!! Form::select('production_promotional', [0 => 'No', 1 => 'Yes'], null, ['class' => 'form-control']) !!}
 	                        		</div>
 	                        	</div>
 	                        	<div class="col-sm-3">

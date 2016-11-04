@@ -48,7 +48,10 @@
 			                      					
 			                      				@endforeach
 			                      			</td>
-			                      			<td>09/23/2016 (PLog)</td>
+			                      			<td>
+			                      				<?php $plog = $project->plogs->last(); ?>
+			                      				{{$plog['converted_updated_at']}}
+			                      			</td>
 			                      		</tr>
 			                      	@endforeach
 			                      </tbody>
@@ -60,5 +63,12 @@
 	        </div>
 	    </div>
 	</div>
+@endsection
+@section('scripts')
+	@if(session()->has('message'))
+		<script type="text/javascript">
+			toastr.success('{!! session('message') !!}');
+		</script>
+	@endif
 @endsection
 

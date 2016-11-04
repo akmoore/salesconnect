@@ -6,13 +6,15 @@ use Carbon\Carbon;
 use App\Calendar;
 use App\Project;
 use App\Events\CalendarEventCreated;
+use App\Events\Project\LogActivity;
 use App\SalesConnect\Helpers\EventHelperTrait;
+use App\SalesConnect\Helpers\ExtractedListTrait;
 use App\SalesConnect\Helpers\Interfaces\CalendarInterface;
 
 
 class CalendarRepo implements CalendarInterface{
 
-	use EventHelperTrait;
+	use EventHelperTrait, ExtractedListTrait;
 
 	protected $event;
 	protected $project;
@@ -23,7 +25,7 @@ class CalendarRepo implements CalendarInterface{
 	}
 
 	public function showAll(){
-		//return all records
+		return $this->event->with('project')->get();
 	}
 
 	public function showRecord($id){
@@ -59,6 +61,7 @@ class CalendarRepo implements CalendarInterface{
 		]);	
 
 		event(new CalendarEventCreated($event, $project));
+		event(new LogActivity('calendars', 'created', $event));
 
 		return $event;
 	}
@@ -67,6 +70,7 @@ class CalendarRepo implements CalendarInterface{
 		// return $id;
 		$project = $this->getProject($request['project_id']);
 		$event = $this->event->find($id);
+		$eventOrg = $this->extractOriginal($event);
 		$eventData = $this->convertedEventData($request);
 		$duration = $this->timeDuration($eventData);
 		if($this->checkEventConflictOnUpdate($eventData, $id)) return false;
@@ -85,7 +89,10 @@ class CalendarRepo implements CalendarInterface{
 			'notes' => $request['notes']
 		]);
 
+		$list = $this->extractOriginalValues($eventOrg, $event);
+
 		event(new CalendarEventCreated($event, $project));
+		event(new LogActivity('calendars', 'updated', $event, $list));
 
 		return $event;
 	}
@@ -94,6 +101,7 @@ class CalendarRepo implements CalendarInterface{
 		$event = $this->event->find($id);
 		$event->delete();
 
+		event(new LogActivity('calendars', 'deleted', $event));
 		return $event;
 	}
 

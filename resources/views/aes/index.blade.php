@@ -57,3 +57,11 @@
 	</div>
 @endsection
 
+@section('scripts')
+	@if(session()->has('message'))
+		<script type="text/javascript">
+			toastr.success('{!! session('message') !!}');
+		</script>
+	@endif
+@endsection
+

@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\EmailEventReminder::class,
+        Commands\TextEventReminder::class
     ];
 
     /**
@@ -26,6 +27,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('sconnect:email-event-reminder')->dailyAt('10:00');
+        $schedule->command('sconnect:text-event-reminder')->everyFiveMinutes();
     }
 
     /**

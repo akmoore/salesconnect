@@ -6,14 +6,17 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Requests\NoteRequest;
+use App\SalesConnect\Helpers\FlashMessageHelper as Flash;
 use App\SalesConnect\Helpers\Interfaces\NoteInterface;
 
 class NoteController extends Controller
 {
     protected $note;
+    protected $flash;
 
-    public function __construct(NoteInterface $note){
+    public function __construct(NoteInterface $note, Flash $flash){
         $this->note = $note;
+        $this->flash = $flash;
     }
     /**
      * Display a listing of the resource.
@@ -45,7 +48,7 @@ class NoteController extends Controller
     public function store(NoteRequest $request, $id)
     {
         $note = $this->note->createRecord($request);
-        return redirect()->route('projects.show', $id);
+        return redirect()->route('projects.show', $id)->with($this->flash->created('The note ' . $note->title));
     }
 
     /**
@@ -83,7 +86,7 @@ class NoteController extends Controller
     {
         // return ['request' => $request->all(), 'project' => $project, 'note' => $id];
         $note = $this->note->updateRecord($request, $id);
-        return redirect()->route('projects.show', $project);
+        return redirect()->route('projects.show', $project)->with($this->flash->updated('The note ' . $note->title));
     }
 
     /**
@@ -95,7 +98,7 @@ class NoteController extends Controller
     public function destroy($project, $id)
     {   
         $proj = $this->note->getProject($project);
-        $this->note->deleteRecord($id);
-        return redirect()->route('projects.show', $proj->slug);
+        $note = $this->note->deleteRecord($id);
+        return redirect()->route('projects.show', $proj->slug)->with($this->flash->deleted('The note ' . $note->title));
     }
 }

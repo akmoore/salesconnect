@@ -23,9 +23,15 @@ class EventEmailReminderCommandHelper {
 									   ->whereEmailedAt(null)
 									   ->get()
 									   ->filter(function($event) use ($now){
-									   		$ed = $event->event_date->timezone('America/Chicago');
-									   		$edDiff = $ed->diffInDays($now);
-									   		return $edDiff == 2;
+									   		// $ed = $event->event_date->timezone('America/Chicago');
+
+									   		// $edDiff = \Carbon::parse($event->start_date_timestamp)->diffInDays($now);
+									   		// return $edDiff > 2;
+									   		return Carbon::parse($event->start_date_timestamp) > $now;
+									   })
+									   ->filter(function($event) use ($now){
+									   		$edDiff = Carbon::parse($event->start_date_timestamp)->diffInDays($now);
+									   		return $edDiff >= 3 && $edDiff <= 4;
 									   });
 		// dd($events);
 

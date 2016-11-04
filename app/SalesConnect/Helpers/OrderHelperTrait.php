@@ -98,8 +98,10 @@ trait OrderHelperTrait {
 	}
 
 	private function getDescription($proj){
+		
 		$note = $proj->notes->filter(function($note){return $note->primary == 1;})->pluck('comments');
-		return $note[0];
+		return is_object($note) ? 'No description.' : $note[0];
+		
 	}
 
 	private function getEditingInfo($proj){

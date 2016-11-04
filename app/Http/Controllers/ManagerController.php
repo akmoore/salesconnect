@@ -6,15 +6,18 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
+use App\SalesConnect\Helpers\FlashMessageHelper as Flash;
 use App\SalesConnect\Helpers\Interfaces\ManagerInterface;
 use App\Http\Requests\ManagerRequest;
 
 class ManagerController extends Controller
 {
     protected $manager;
+    protected $flash;
 
-    public function __construct(ManagerInterface $manager){
+    public function __construct(ManagerInterface $manager, Flash $flash){
         $this->manager = $manager;
+        $this->flash = $flash;
     }
 
     /**
@@ -49,7 +52,7 @@ class ManagerController extends Controller
         
 
         $manager = $this->manager->createRecord($request);
-        return redirect()->route('managers.show', $manager->slug);
+        return redirect()->route('managers.show', $manager->slug)->with($this->flash->created($manager->full_name));
     }
 
     /**
@@ -90,7 +93,7 @@ class ManagerController extends Controller
         // return $manager = \App\Manager::whereSlug('amber-rose')->first();
 
         $manager = $this->manager->updateRecord($request, $id);
-        return redirect()->route('managers.show', $manager->slug);
+        return redirect()->route('managers.show', $manager->slug)->with($this->flash->updated($manager->full_name));
     }
 
     /**
@@ -105,7 +108,7 @@ class ManagerController extends Controller
 
         if(!$clearedAes) return redirect()->back();
 
-        return redirect()->route('managers.index');
+        return redirect()->route('managers.index')->with($this->flash->deleted($clearedAes->full_name));
     }
 
     public function aesCount($aes){

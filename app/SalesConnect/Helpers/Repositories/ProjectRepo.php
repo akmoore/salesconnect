@@ -7,9 +7,13 @@ use App\Project;
 use App\Note;
 use Carbon\Carbon;
 use App\Events\ProjectWasCreated;
+use App\Events\Project\LogActivity;
+use App\SalesConnect\Helpers\ExtractedListTrait;
 use App\SalesConnect\Helpers\Interfaces\ProjectInterface;
 
 class ProjectRepo implements ProjectInterface{
+
+	use ExtractedListTrait;
 
 	protected $project;
 	protected $note;
@@ -57,13 +61,15 @@ class ProjectRepo implements ProjectInterface{
 
 		//Create note for project.
 		event(new ProjectWasCreated($request, $project));
-
+		event(new LogActivity('project', 'created', $project));
 		return $project;
 	}
 
 	public function updateRecord($request, $id){
 		$project = $this->showRecord($id);
-		$pd = $this->produceDate($request['air_date']);
+		$originalProjectData = $this->extractOriginal($project);
+		$airDate = $this->produceDate($request['air_date']);
+		$endDate = $this->produceDate($request['end_date']);
 		$project->update([
 			'client_id' => $request['client_id'],
 			'title' => $request['title'],
@@ -71,15 +77,17 @@ class ProjectRepo implements ProjectInterface{
 			'length' => $request['length'],
 			'production_free' => $request['production_free'],
 			'production_promotional' => $request['production_promotional'],
-			// 'air_date' => Carbon::createFromFormat('Y-m-d', (string)$pd[2].'-'.(string)$pd[0].'-'.(string)$pd[1], 'America/Chicago'),
-			// 'air_date' => $request['air_date'],
-			'air_date' => (string)$pd[2].'-'.(string)$pd[0].'-'.(string)$pd[1],
-			'end_date' => null,
+			'air_date' => (string)$airDate[2].'-'.(string)$airDate[0].'-'.(string)$airDate[1],
+			'end_date' => (string)$endDate[2].'-'.(string)$endDate[0].'-'.(string)$endDate[1],//was set to null, because progress should set it once project is done.
 			'c_number' => $request['c_number'],
 			'isci' => $request['isci'],
 			'music_track' => $request['music_track'],
 			'youtube_link' => $request['youtube_link']
 		]);
+
+		$extractedList = $this->extractOriginalValues($originalProjectData, $project); 
+		
+		event(new LogActivity('project', 'updated', $project, $extractedList));
 
 		return $project;
 	}
@@ -120,4 +128,10 @@ class ProjectRepo implements ProjectInterface{
 	private function getFilePath($file){
 		return 'videos/'.$file;
 	}
+
 }
+
+
+
+
+

@@ -4,9 +4,13 @@ namespace App\SalesConnect\Helpers\Repositories;
 
 use App\Progress;
 use App\Project;
+use App\Events\Project\LogActivity;
+use App\SalesConnect\Helpers\ExtractedListTrait;
 use App\SalesConnect\Helpers\Interfaces\ProgressInterface;
 
 class ProgressRepo implements ProgressInterface{
+
+	use ExtractedListTrait;
 
 	protected $progress;
 	protected $project;
@@ -33,6 +37,7 @@ class ProgressRepo implements ProgressInterface{
 		$preSum = $this->preSum($request);
 
 		$project = $this->project->whereSlug($data[0])->first();
+		$progOrg = $this->extractOriginal($project->progress);
 		$project->progress()->update([
 			'project_id' => $request['project_id'],
 			'prepro_schedule' => $request['prepro_schedule'] ? 1 : 0,
@@ -47,6 +52,11 @@ class ProgressRepo implements ProgressInterface{
 			'aired' => $request['aired'] ? 1 : 0,
 			'sum' => $preSum * 10
 		]);
+		// $progress = (new \App\Progress())->where('project_id', '=', $project->id);
+		// dd($progOrg);
+		// dd([$progOrg, $request->all()]);
+		$list = $this->extractOriginalValues($progOrg, $request->all());
+		event(new LogActivity('progress', 'updated', $project, $list));
 
 		if($project->sum >= 100) {
 			//Run an event

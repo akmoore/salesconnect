@@ -34,7 +34,7 @@ class SendEmail
             case 'shoot':
                 $emails = $this->getEmails($event->project);
                 foreach($emails as $email){
-                    \Mail::to($email)->queue(new EventWasCreatedMail($event->event, $event->project));
+                    \Mail::to($email['email'])->queue(new EventWasCreatedMail($event->event, $event->project, $email));
                 }
                 break;
             
@@ -45,12 +45,19 @@ class SendEmail
     }
 
     public function getEmails($project){
-        $emailsArray = [
-            'ak_moore@live.com',
-            $project->client->primary_contact_email,
-            $project->client->aes->map(function($ae){return $ae->email;}),
-            $project->client->agency ? $project->client->agency->contact_email : ''
-        ];
-        return $emails = collect($emailsArray)->flatten()->filter(function($email){return $email != '';});
+
+        $editor = ['name' => 'Ken Moore', 'email' => 'kmoore@brproud.com'];
+        $client = ['name' => $project->client->primary_contact_first_name, 'email' => $project->client->primary_contact_email];
+        $aes = $project->client->aes->map(function($ae){return ['name' => $ae->first_name, 'email' => $ae->email];});
+        $agency = $project->client->agency ? ['name' => $project->client->agency->contact_first_name, 'email' => $project->client->agency->contact_email] : '';
+
+        $emailsArray = [$editor, $client, $agency];
+        foreach ($aes->toArray() as $value) {
+            array_push($emailsArray, $value);
+        }
+
+        return $emails = collect($emailsArray)->filter(function($email){return $email != '';});
     }
+
+
 }

@@ -58,5 +58,8 @@ class Project extends Model
     	return $this->hasOne(\App\Order::class);
     }
 
+    public function plogs(){
+        return $this->hasMany(\App\PLog::class);
+    }
     
 }

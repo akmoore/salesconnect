@@ -17,6 +17,9 @@
     <link rel="stylesheet" type="text/css" href="/css/timedropper.min.css">
     <link rel="stylesheet" type="text/css" href="/css/trumbowyg.min.css">
     <link rel="stylesheet" type="text/css" href="/css/dropzone.css">
+    <link rel="stylesheet" href="/css/toastr.min.css"/>
+
+    @yield('css')
     <!-- Scripts -->
     <script>
         window.Laravel = <?php echo json_encode([
@@ -65,6 +68,9 @@
                                 <li>
                                     <a href="{{route('projects.index')}}">Projects</a>
                                 </li>
+                                <li>
+                                    <a href="{{route('calendar')}}">Calendar</a>
+                                </li>
                                 <li class="divider"></li>
                                 <li>
                                     <a href="{{route('aes.index')}}">Account Executives</a>
@@ -102,6 +108,8 @@
 
     <!-- Scripts -->
     <script src="/js/app.js"></script>
+    <script type="text/javascript" src="/js/underscore-min.js"></script>
+    <script type="text/javascript" src="/js/jstz.min.js"></script>
     <script type="text/javascript" src="/js/moment.min.js"></script>
     <script type="text/javascript" src="/js/jquery.mask.min.js"></script>
     <script type="text/javascript" src="/js/mustache.min.js"></script>
@@ -109,6 +117,7 @@
     <script src="/js/datedropper.min.js"></script>
     <script src="/js/timedropper.min.js"></script>
     <script src="/js/trumbowyg.min.js"></script>
+    <script src="/js/toastr.min.js"></script>
     @yield('scripts')
     
 </body>

@@ -64,7 +64,8 @@ class AeRepo implements AeInterface {
 		$ae = $this->ae->findOrFail($id);
 		$ae->delete();
 
-		return $ae->full_name . " record has been deleted";
+		// return $ae->full_name . " record has been deleted";
+		return $ae;
 	}
 
 	public function getManagers(){

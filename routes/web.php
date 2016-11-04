@@ -18,9 +18,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
-
 Route::get('/home', 'HomeController@index');
+Route::get('login', ['as' => 'login', 'uses' => 'Auth\LoginController@showLoginForm']);
+Route::post('login', 'Auth\LoginController@login');
+Route::post('logout', 'Auth\LoginController@logout');
+
+
 Route::group(['middleware' => 'auth'], function(){
 	Route::resource('aes', 'AeController');
 	Route::resource('managers', 'ManagerController');
@@ -33,7 +36,10 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('projects.events', 'CalendarController');
 	Route::resource('projects.orders', 'OrderController');
 	Route::get('projects/{project}/orders/{order}/pdf', ['as' => 'projects.orders.pdf', 'uses' => 'OrderController@pdf']);
+
 	Route::get('/message', ['as' => 'send.message', 'uses' => 'Messages@sendMessage']);
+	Route::get('/calendar', ['as' => 'calendar', 'uses' => 'CalendarController@index']);
+	Route::get('/calendar/events', ['as' => 'calendar.events', 'uses' => 'CalendarController@composeEventsArray']);
 });
 
 

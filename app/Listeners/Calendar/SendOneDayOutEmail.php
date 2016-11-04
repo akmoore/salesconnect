@@ -8,16 +8,22 @@ use App\Mail\EventReminderEmail;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
+use App\Calendar;
+use App\Project;
+
 class SendOneDayOutEmail implements ShouldQueue
 {
+    protected $calendar;
+    protected $project;
     /**
      * Create the event listener.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Calendar $calendar, Project $project)
     {
-        //
+        $this->calendar = $calendar;
+        $this->project = $project;
     }
 
     /**
@@ -31,16 +37,30 @@ class SendOneDayOutEmail implements ShouldQueue
         $emails = $this->getRecipientsInfo($event->recipients, 'email');
         $names = $this->getRecipientsInfo($event->recipients, 'name');
         $combine = $names->combine($emails);
-        $dumpArray = [];
+        $project = $this->project->whereId($event->event->project_id)->first();
+
+        // $dumpArray = [];
+        // dd($event->event->id);
+
+        // $calendar = $this->calendar->find($event->event->id);
+        // $calendar->emailed = 1;
+        // $calendar->emailed_at = Carbon\Carbon::now();
+        // $calendar->save();
 
         foreach($combine as $name => $email){
-            \Mail::to($email)->queue(new EventReminderEmail($event->event, $name));
+            \Mail::to($email)->queue(new EventReminderEmail($event->event, $name, $project));
 
             // dd($event->event->emailed);
+
             // $event->event->emailed = 1;
             // $event->event->emailed_at = Carbon\Carbon::now();
             // $event->event->save();
         }
+
+        // $calendar = $this->calendar->find($event->event->id);
+        // $calendar->emailed = 1;
+        // $calendar->emailed_at = Carbon\Carbon::now();
+        // $calendar->save();
         
     }
 

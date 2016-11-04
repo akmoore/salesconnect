@@ -6,16 +6,21 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Requests\AeRequest;
-
+use App\SalesConnect\Helpers\PhoneHelperTrait;
+use App\SalesConnect\Helpers\FlashMessageHelper as Flash;
 use App\SalesConnect\Helpers\Interfaces\AeInterface as Ae;
 // use App\SalesConnect\Helpers\Repositories\AeRepo as Ae;
 
 class AeController extends Controller
 {
-    protected $ae;
+    use PhoneHelperTrait;
 
-    public function __construct(Ae $ae){
+    protected $ae;
+    protected $flash;
+
+    public function __construct(Ae $ae, Flash $flash){
         $this->ae = $ae;
+        $this->flash = $flash;
     }
 
     /**
@@ -26,6 +31,9 @@ class AeController extends Controller
     public function index()
     {
         $aes = $this->ae->showAll();
+
+        // return $this->showPhoneNumber($aes);
+
         return view('aes.index', compact('aes'));
     }
 
@@ -50,7 +58,8 @@ class AeController extends Controller
     public function store(AeRequest $request)
     {
         $ae = $this->ae->createRecord($request);
-        return redirect()->route('aes.show', $ae->slug);
+        return redirect()->route('aes.show', $ae->slug)
+                         ->with($this->flash->created($ae->full_name));
     }
 
     /**
@@ -63,7 +72,6 @@ class AeController extends Controller
     {
         $projects = $this->getProjects($id);
         $ae = $this->ae->showRecord($id);
-        // return $ae->manager->team;
         return view('aes.show', compact('ae', 'projects'));
     }
 
@@ -91,7 +99,8 @@ class AeController extends Controller
     {
         // return [$request->all(), $id];
         $ae = $this->ae->updateRecord($request, $id);
-        return redirect()->route('aes.show', $ae->slug);
+        return redirect()->route('aes.show', $ae->slug)
+                         ->with($this->flash->updated($ae->full_name));
     }
 
     /**
@@ -104,7 +113,8 @@ class AeController extends Controller
     {
         $ae =  $this->ae->deleteRecord($id);
 
-        if($ae) return redirect()->route('aes.index');
+        if($ae) return redirect()->route('aes.index')
+                                 ->with($this->flash->deleted($ae->full_name));
     }
 
     public function getProjects($id){       
@@ -135,6 +145,17 @@ class AeController extends Controller
             return false;
         }
     }
+
+    // public function showPhoneNumber($numbers){
+    //     $phoneNumbers = [];
+
+    //     foreach($numbers as $number){
+    //         $phoneNumbers[] = $this->transformPhoneNumber($->work_phone);
+    //     }
+
+    //     return $phoneNumbers;
+        
+    // }
 }
 
 

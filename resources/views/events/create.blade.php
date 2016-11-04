@@ -142,4 +142,9 @@
 
 		})();
 	</script>
+	@if(session()->has('message'))
+		<script type="text/javascript">
+			toastr.error('{!! session('message') !!}');
+		</script>
+	@endif
 @endsection

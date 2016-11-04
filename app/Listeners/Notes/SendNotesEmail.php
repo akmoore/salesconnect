@@ -51,6 +51,7 @@ class SendNotesEmail
     }
 
     private function collectAssocArray($project){
+        
         $associatesArray = [
             'ak_moore@live.com',
             $project->client->primary_contact_email,

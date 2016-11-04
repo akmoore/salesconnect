@@ -28,7 +28,18 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\Notes\SendNotesEmail'
         ],
         'App\Events\EmailCalendarEventOneDayOut' => [
-            'App\Listeners\Calendar\SendOneDayOutEmail'
+            'App\Listeners\Calendar\SendOneDayOutEmail',
+            'App\Listeners\Calendar\SetEventAsSent'
+        ],
+        'App\Events\TextCalendarEventOneHourOut' => [
+            'App\Listeners\Calendar\SendOneHourOutText',
+            'App\Listeners\Calendar\SetTextAsSent'
+        ],
+        'App\Events\Project\LogActivity' => [
+            'App\Listeners\Project\ProjectEventOccured',
+            'App\Listeners\Project\CalendarEventOccured',
+            'App\Listeners\Project\NoteEventOccured',
+            'App\Listeners\Project\ProgressEventOccured'
         ]
     ];
 

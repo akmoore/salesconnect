@@ -11,18 +11,20 @@ class EventReminderEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $eventer;
-    public $recipient;
+    public $event;
+    public $name;
+    public $project;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($eventer, $recipient)
+    public function __construct($event, $name, $project)
     {
-        $this->eventer = $eventer;
-        $this->recipient = $recipient;
+        $this->event = $event;
+        $this->name = $name;
+        $this->project = $project;
     }
 
     /**
