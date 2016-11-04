@@ -6,7 +6,7 @@ use App\Events\Project\LogActivity;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-use App\Plog;
+use App\PLog;
 
 class NoteEventOccured
 {
@@ -16,7 +16,7 @@ class NoteEventOccured
      *
      * @return void
      */
-    public function __construct(Plog $plog)
+    public function __construct(PLog $plog)
     {
         $this->plog = $plog;
     }
@@ -51,7 +51,6 @@ class NoteEventOccured
                     break;
                 
                 default:
-                    # code...
                     break;
             }
         }

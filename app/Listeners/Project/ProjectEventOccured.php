@@ -6,7 +6,7 @@ use App\Events\Project\LogActivity;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-use App\Plog;
+use App\PLog;
 use App\Project;
 
 class ProjectEventOccured
@@ -18,7 +18,7 @@ class ProjectEventOccured
      *
      * @return void
      */
-    public function __construct(Plog $plog, Project $project)
+    public function __construct(PLog $plog, Project $project)
     {
         $this->plog = $plog;
         $this->project = $project;
@@ -43,7 +43,6 @@ class ProjectEventOccured
                     break;
                 
                 default:
-                    # code...
                     break;
             }
         }
