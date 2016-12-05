@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Calendar;
 use App\Project;
 use App\Events\CalendarEventCreated;
+use App\Events\CalendarEventDeleted;
 use App\Events\Project\LogActivity;
 use App\SalesConnect\Helpers\EventHelperTrait;
 use App\SalesConnect\Helpers\ExtractedListTrait;
@@ -60,7 +61,7 @@ class CalendarRepo implements CalendarInterface{
 			'notes' => $request['notes']
 		]);	
 
-		event(new CalendarEventCreated($event, $project));
+		event(new CalendarEventCreated($event, $project, $request));
 		event(new LogActivity('calendars', 'created', $event));
 
 		return $event;
@@ -91,7 +92,7 @@ class CalendarRepo implements CalendarInterface{
 
 		$list = $this->extractOriginalValues($eventOrg, $event);
 
-		event(new CalendarEventCreated($event, $project));
+		event(new CalendarEventCreated($event, $project, $request));
 		event(new LogActivity('calendars', 'updated', $event, $list));
 
 		return $event;
@@ -101,6 +102,7 @@ class CalendarRepo implements CalendarInterface{
 		$event = $this->event->find($id);
 		$event->delete();
 
+		event(new CalendarEventDeleted($event));
 		event(new LogActivity('calendars', 'deleted', $event));
 		return $event;
 	}

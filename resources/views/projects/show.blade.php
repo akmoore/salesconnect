@@ -31,9 +31,6 @@
 	                		<button data-toggle="modal" data-target="#progressModal" class="btn btn-sm btn-default">
 	                			Progress <span> | {{$project->progress->sum}}%</span>
 	                		</button>
-	                		<button data-toggle="modal" data-target="#youtubeModal" class="btn btn-sm btn-danger">
-	                			YouTube
-	                		</button>
 	                		<a href="{{route('projects.orders.edit', [$project->slug, $project->order->id])}}" class="btn btn-sm btn-default">Order</a>
 	                	</div>
 	                </div>
@@ -66,6 +63,16 @@
 	                    				@endif
 	                    			@endforeach
 	                    		</p>
+	                    	</div>
+	                    	<div class="col-sm-3 col-xs-4">
+	                    		<p><strong>Campaign (code)</strong></p>
+	                    		@if($project->campaign->count())
+									<p style="margin-top:-15px;">{{$project->campaign->display_name}} 
+									<small><small>({!! $project->campaign->ccode !!})</small></small></p>
+								@else
+									<p style="margin-top:-15px;">N/A</p>
+	                    		@endif
+	                    		
 	                    	</div>
 	                    </div>
 	                    <div class="row">
@@ -116,7 +123,7 @@
 	                    	<div class="col-md-6 col-xs-12">
 	                    		<p><strong>ISCI</strong></p>
 	                    		<p style="margin-top:-15px;">
-	                    			{{ucfirst(camel_case($project->title))}}_{{\Carbon\Carbon::now()->year}}_HD
+	                    			{{$project->isci}}
 	                    		</p>
 	                    	</div>
 	                    </div>
@@ -128,7 +135,8 @@
 	    <div class="row">
 	        <div class="col-sm-10 col-sm-offset-1">
 	            <div class="panel panel-default">
-	                <div class="panel-heading clearfix">Events <a href="{{route('projects.events.create', $project->slug)}}" class="btn btn-sm btn-default pull-right">New Event</a></div>
+	                <div class="panel-heading clearfix">Events  <small>({!! $project->events->count() !!})</small>
+	                <a href="{{route('projects.events.create', $project->slug)}}" class="btn btn-sm btn-default pull-right">New Event</a></div>
 	                <div class="panel-body">
 	                	@if($project->events->count())
 	        		  		<div class="table-responsive" style="margin-top:10px;">
@@ -184,7 +192,8 @@
 	    <div class="row">
 	        <div class="col-sm-10 col-sm-offset-1">
 	            <div class="panel panel-default">
-	                <div class="panel-heading clearfix">Notes <a href="{{route('projects.notes.create', $project->slug)}}" class="btn btn-sm btn-default pull-right">New Note</a></div>
+	                <div class="panel-heading clearfix">Notes  <small>({!! $project->notes->count() !!})</small>
+	                <a href="{{route('projects.notes.create', $project->slug)}}" class="btn btn-sm btn-default pull-right">New Note</a></div>
 	                <div class="panel-body">
 	                	@if($project->notes->count())
 	        		  		<div class="table-responsive" style="margin-top:10px;">
@@ -236,8 +245,52 @@
 	            </div>
 	        </div>
 	    </div>
+	    <div class="row">
+	        <div class="col-sm-10 col-sm-offset-1">
+	            <div class="panel panel-danger">
+	                <div class="panel-heading clearfix">YouTube <small>({!! $project->videos->count() !!})</small>
+	                <!-- <a href="{{route('projects.notes.create', $project->slug)}}" class="btn btn-sm btn-default pull-right">Add Video</a> -->
+	                	<div class="btn-group pull-right" role="group">
+	                		<button data-toggle="modal" data-target="#youtubeModal" class="btn btn-sm btn-default">
+	                			Add Video
+	                		</button>
+	                	</div>
+	                </div>
+
+	                <div class="panel-body">
+	                	@if($project->videos->count())
+	        		  		<div class="table-responsive" style="margin-top:10px;">
+	    	    		    	<table class="table table-hover ">
+	    	    		    	  	<thead>
+	    		    		    	    <tr>
+	    		    		    	    	<th>Index</th>
+	    		    		    	    	<th>Title (ISCI)</th>
+	    		    		    	    	<th>Link</th>
+	    			    		    	    <th>Created</th>
+	    		    		    	    </tr>
+	    		    		    	</thead>
+	    		    		    	<tbody>
+	    		    		    		@foreach($project->videos as $key => $video)
+    	    		    		    	    <tr>
+    	    		    		    	    	<td>{{++$key}}</td>
+        		    		    	    		<td>{!! $video->title !!}</td>
+        		    		    	    		<td><a target="_blank" href="{!! $video->link !!}">{!! $video->link !!}</a></td>
+        		    		    	    		<td>{!! $video->created_at->format('M d, Y') !!}</td>
+    	    		    		    	    </tr>
+	    		    		    	    @endforeach
+	    		    		    	</tbody>
+	    	    		    	</table>
+	        		  		</div>
+	        		  	@else
+	        		  		<p>Currently, there are no Videos.</p>
+        		  		@endif
+	                </div>
+	            </div>
+	        </div>
+	    </div>
 	</div>
 
+	<!-- MODAL FOR NOTES -->
 	<div class="modal fade" tabindex="-1" role="dialog" id="myModal">
 	  <div class="modal-dialog modal-lg" role="document">
 	    <div class="modal-content">
@@ -257,6 +310,7 @@
 	  </div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
 
+	<!-- MODAL FOR EVENTS -->
 	<div class="modal fade" tabindex="-1" role="dialog" id="eventModal">
 	  <div class="modal-dialog modal-lg" role="document">
 	    <div class="modal-content">
@@ -276,6 +330,42 @@
 	  </div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
 
+	<!-- MODAL FOR YOU-TUBE -->
+	<div class="modal fade" tabindex="-1" role="dialog" id="youtubeModal">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title">Add <span class="text-danger">YouTube</span> Video</h4>
+	      </div>
+	      {!! Form::open(['route' => ['projects.videos.store', $project->slug]]) !!}
+	      <div class="modal-body">
+	      	<div class="col-sm-12 note-comments" style="margin-bottom: 50px;">
+	      		{!! Form::hidden('project_id', $project->id) !!}
+	      		<div class="row">
+	      			<div class="col-md-12 col-sm-12 col-xs-12 form-group">
+	      				{!! Form::label('link', 'YouTube Link') !!}
+	      				{!! Form::text('link', null, ['class' => 'form-control']) !!}
+	      			</div>
+	      		</div>
+	      		<div class="row">
+	      			<div class="col-md-12 col-sm-12 col-xs-12 form-group">
+	      				{!! Form::label('email_list', 'Email List') !!}<small><small> (Client, Ae, Agency, and Manager are already included.)</small></small>
+	      				{!! Form::text('email_list', null, ['class' => 'form-control']) !!}
+	      			</div>
+	      		</div>
+	      	</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        {!! Form::submit('Submit', ['class' => 'btn btn-primary']) !!}
+	      </div>
+	      {!! Form::close() !!}
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+	<!-- MODAL FOR PROGRESS -->
 	<div class="modal fade" tabindex="-1" role="dialog" id="progressModal">
 	  <div class="modal-dialog modal-lg" role="document">
 	    <div class="modal-content">
@@ -331,47 +421,6 @@
 	      			<div class="col-md-3 col-sm-6 col-xs-12 form-group">
 	      				{!! Form::checkbox('aired', 1, $project->progress->aired) !!}
 	      				{!! Form::label('aired', 'Aired?') !!}
-	      			</div>
-	      		</div>
-	      		
-	      	</div>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        {!! Form::submit('Submit', ['class' => 'btn btn-primary']) !!}
-	      </div>
-	      {!! Form::close() !!}
-	    </div><!-- /.modal-content -->
-	  </div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
-
-	<div class="modal fade" tabindex="-1" role="dialog" id="youtubeModal">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title">Upload to YouTube</h4>
-	      </div>
-	      {!! Form::open(['route' => ['projects.youtube', $project->slug], 'files' => true]) !!}
-	      <div class="modal-body">
-	      	<div class="col-sm-12 note-comments" style="margin-bottom: 50px;">
-	      		{!! Form::hidden('project_id', $project->id) !!}
-	      		<div class="row">
-	      			<div class="col-md-6 col-sm-6 col-xs-12 form-group">
-	      				{!! Form::label('video', 'Choose a Video') !!}
-	      				{!! Form::file('video', ['class' => 'dropzone']) !!}
-	      			</div>
-	      		</div>
-	      		<div class="row">
-	      			<div class="col-md-12 col-sm-6 col-xs-12 form-group">
-	      				{!! Form::label('video_title', 'Title') !!}
-	      				{!! Form::text('video_title', null, ['class' => 'form-control']) !!}
-	      			</div>
-	      		</div>
-	      		<div class="row">
-	      			<div class="col-md-12 col-sm-12 col-xs-12 form-group">
-	      				{!! Form::label('description', 'Description') !!}
-	      				{!! Form::textarea('description', null, ['class' => 'form-control']) !!}
 	      			</div>
 	      		</div>
 	      		

@@ -11,7 +11,7 @@ class Order extends Model
     	'location_time', 'edit_time', 'vcd_vhs', 'dvd',
     	'beta_dub', 'crawl', 'ftp', 'music_library', 'discount',
     	'vcd_vhs_date', 'dvd_date', 'beta_dub_date',
-    	'crawl_date', 'ftp_date', 'music_library_date'
+    	'crawl_date', 'ftp_date', 'music_library_date', 'order_total'
     ];
 
     protected $dates = [

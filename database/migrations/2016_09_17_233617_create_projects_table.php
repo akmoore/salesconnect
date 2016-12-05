@@ -16,6 +16,7 @@ class CreateProjectsTable extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('client_id')->index();
+            $table->integer('campaign_id')->index();
             $table->boolean('active');
             $table->string('title');
             $table->string('slug')->unique()->index();

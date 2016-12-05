@@ -20,11 +20,27 @@
 	                <div class="panel-body">
 	                    {!! Form::open(['route' => 'projects.store']) !!}
 	                        <div class="row">
-	                        	<div class="col-sm-12">
+	                        	<div class="col-sm-6">
 	                        		<div class="form-group {{$errors->has('client_id')? 'has-error':''}}">
 	                        		    {!! Form::label('client_id', 'Select Client') !!}
 	                        		    {!! Form::select('client_id', $resources['clients'], $client, ['class' => 'form-control']) !!}
 	                        		</div>
+	                        	</div>
+	                        	<div class="col-sm-6">
+	                        		<div class="form-group {{$errors->has('campaign')? 'has-error':''}}">
+	                        		    {!! Form::label('campaign_id', 'Select Campaign') !!}
+    	                        		<div class="input-group">
+                            		      	{!! Form::select('campaign_id', $resources['campaigns'], $client, ['class' => 'form-control', 'placeholder' => '- Choose Campaign']) !!}
+                            		      	<span class="input-group-btn">
+                            		        	<button 
+                            		        		class="btn btn-default glyphicon glyphicon-edit" 
+                            		        		type="button" 
+                            		        		data-toggle="modal" 
+                            		        		data-target="#campaignModal" ></button>
+                            		      	</span>
+                            		    </div><!-- /input-group -->
+	                        		</div>
+	                        		
 	                        	</div>
 	                        </div>
 	                        
@@ -108,6 +124,34 @@
 	        </div>
 	    </div>
 	</div>
+
+	<!-- MODAL FOR YOU-TUBE -->
+	<div class="modal fade" tabindex="-1" role="dialog" id="campaignModal">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title">Create New Campaign</h4>
+	      </div>
+	      {!! Form::open(['route' => 'campaigns.store']) !!}
+	      <div class="modal-body">
+	      	<div class="col-sm-12 note-comments" style="margin-bottom: 50px;">
+	      		<div class="row">
+	      			<div class="col-md-12 col-sm-12 col-xs-12 form-group">
+	      				{!! Form::label('display_name', 'Campaign\'s Name') !!}
+	      				{!! Form::text('display_name', null, ['class' => 'form-control']) !!}
+	      			</div>
+	      		</div>
+	      	</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        {!! Form::submit('Submit', ['class' => 'btn btn-primary']) !!}
+	      </div>
+	      {!! Form::close() !!}
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
 
 @endsection()
 

@@ -41,4 +41,11 @@ return [
         'phone' => env('TWILIO_NUMBER')
     ],
 
+    'admin' => [
+        'user' => env('ADMIN_USERNAME'),
+        'password' => env('ADMIN_PASSWORD'),
+        'work_phone' => env('ADMIN_WORK_PHONE'),
+        'cell_phone' => env('ADMIN_CELL_PHONE'),
+    ]
+
 ];

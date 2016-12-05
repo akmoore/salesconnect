@@ -6,6 +6,7 @@ trait OrderHelperTrait {
 	
 	public function poFields($proj, $ord){
 		setlocale(LC_MONETARY, 'en_US.UTF-8');
+		// return[$proj, $ord];
 		return $array = [
 			'title' => $proj->title,
 			'year' => $proj->created_at->format('Y'),
@@ -134,7 +135,7 @@ trait OrderHelperTrait {
 		return $this->returnAllNull();
 	}
 
-	private function getTotalWorkAmount($proj, $ord){
+	public function getTotalWorkAmount($proj, $ord){
 		return collect([
 			$this->getEditingInfo($proj)['total_charge'],
 			$this->getLocationInfo($proj)['total_charge'],

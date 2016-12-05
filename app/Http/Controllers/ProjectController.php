@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Client;
+use App\Campaign;
 use App\Http\Requests;
 use App\Http\Requests\ProjectRequest;
 use App\SalesConnect\Helpers\Interfaces\ProjectInterface;
@@ -12,10 +13,12 @@ use App\SalesConnect\Helpers\Interfaces\ProjectInterface;
 class ProjectController extends Controller
 {
     protected $project;
+    protected $campaign;
 
-    public function __construct(ProjectInterface $project, Client $client){
+    public function __construct(ProjectInterface $project, Client $client, Campaign $campaign){
         $this->project = $project;
         $this->client = $client;
+        $this->campaign = $campaign;
     }
 
     /**
@@ -109,10 +112,13 @@ class ProjectController extends Controller
         $length = [ 5   => '00:05', 10  => '00:10', 15  => '00:15', 30  => '00:30',
                     45  => '00:45', 60  => '01:00', 90  => '01:30', 120 => '02:00',
                     121 => 'Greater than two minutes'];
+        $campaigns = $this->campaign->count() ? $this->campaign->get()->sortBy('display_name')->pluck('display_name', 'id') 
+                                              : [0 => 'No Campaigns Available'];
 
         return [
             'clients' => $clients,
-            'length'  => $length
+            'length'  => $length,
+            'campaigns' => $campaigns
         ];
     }
 

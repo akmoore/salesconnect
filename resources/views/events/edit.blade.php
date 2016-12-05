@@ -22,10 +22,16 @@
 	                    {!! Form::model($event, ['route' => ['projects.events.update', $project->slug, $event->id], 'method'=>'PUT']) !!}
 	                    	{!! Form::hidden('project_id', $project->id) !!}
 	                        <div class="row" style="margin-top:20px;">
-	                        	<div class="col-sm-12">
+	                        	<div class="col-sm-10">
 	                        		<div class="form-group {{$errors->has('event_date')? 'has-error':''}}">
 	                        		    {!! Form::label('event_date', 'Date') !!}
 	                        		    {!! Form::text('event_date', $event->event_date->format('Y-m-d'), ['class' => 'form-control', 'id' => 'event-date']) !!}
+	                        		</div>
+	                        	</div>
+	                        	<div class="col-sm-2">
+	                        		<div class="form-group {{$errors->has('emailable')? 'has-error':''}}">
+	                        		    {!! Form::label('emailable', 'Email') !!}
+	                        		    {!! Form::select('emailable', [1 => 'Yes', 0 => 'No'], null, ['class' => 'form-control']) !!}
 	                        		</div>
 	                        	</div>
 	                        </div>

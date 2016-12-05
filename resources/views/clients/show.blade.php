@@ -110,7 +110,7 @@
 	    		    		    	    </tr>
 	    		    		    	</thead>
 	    		    		    	<tbody>
-	    		    		    		@foreach($client->projects as $project)
+	    		    		    		@foreach($client->projects->sortByDesc('created_at') as $project)
 		    		    		    	    <tr>
 		    		    		    	      	<td><a href="{{route('projects.show', $project->slug)}}">{{$project->title}}</a></td>
 		    		    		    	      	<td>{{ $project->active ? 'Yes' : 'No'}}</td>

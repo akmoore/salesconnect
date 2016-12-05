@@ -20,6 +20,7 @@ class CreateYoutubesTable extends Migration
             $table->text('description');
             $table->string('link');
             $table->boolean('emailed');
+            $table->string('email_list')->nullable();
             $table->timestamps();
         });
     }

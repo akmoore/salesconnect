@@ -33,12 +33,12 @@
 	                    	</div>
 	                    	<div class="col-sm-4 col-xs-6">
 	                    		<p><strong>Work Phone</strong></p>
-	                    		<p style="margin-top:-15px;"><a href="tel:{{$manager->work_phone}}">{{$manager->work_phone}}</a></p>
+	                    		<p style="margin-top:-15px;"><a href="tel:{{$manager->work_phone_callable}}" >{{$manager->work_phone}}</a></p>
 	                    		<!-- <p style="margin-top:-15px;">{{substr_replace(substr_replace(substr_replace($manager->work_phone,'(',0,0),') ',4,0),'-',9,0)}}</p> -->
 	                    	</div>
 	                    	<div class="col-sm-4 col-xs-6">
 	                    		<p><strong>Cell Phone</strong></p>
-	                    		<p style="margin-top:-15px;">{{$manager->cell_phone}}</p>
+	                    		<p style="margin-top:-15px;" >{{$manager->cell_phone}}</p>
 	                    	</div>
 	                    </div>
 	                    <div class="row">
@@ -120,6 +120,7 @@
 	            });
 	        });
 	    };
+
 	</script>
 	@if(session()->has('message'))
 		<script type="text/javascript">

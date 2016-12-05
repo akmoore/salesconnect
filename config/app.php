@@ -169,7 +169,7 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Cviebrock\EloquentSluggable\ServiceProvider::class,
         Vsmoraes\Pdf\PdfServiceProvider::class,
-        Dawson\Youtube\YoutubeServiceProvider::class,
+        // Dawson\Youtube\YoutubeServiceProvider::class,
         //
 
         /*
@@ -189,6 +189,7 @@ return [
         App\Providers\ProgressServiceProvider::class,
         App\Providers\CalendarServiceProvider::class,
         App\Providers\OrderServiceProvider::class,
+        App\Providers\YoutubeServiceProvider::class,
     ],
 
     /*

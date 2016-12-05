@@ -28,6 +28,7 @@ class CreateOrdersTable extends Migration
             $table->integer('ftp')->default(0);
             $table->integer('music_library')->default(0);
             $table->double('discount')->default(0);
+            $table->double('order_total')->default(0);
 
             $table->date('vcd_vhs_date')->nullable();
             $table->date('dvd_date')->nullable();

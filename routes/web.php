@@ -36,10 +36,13 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('projects.events', 'CalendarController');
 	Route::resource('projects.orders', 'OrderController');
 	Route::get('projects/{project}/orders/{order}/pdf', ['as' => 'projects.orders.pdf', 'uses' => 'OrderController@pdf']);
+	Route::resource('projects.videos', 'YoutubeController');
 
-	Route::get('/message', ['as' => 'send.message', 'uses' => 'Messages@sendMessage']);
+	// Route::get('/message', ['as' => 'send.message', 'uses' => 'Messages@sendMessage']);
 	Route::get('/calendar', ['as' => 'calendar', 'uses' => 'CalendarController@index']);
 	Route::get('/calendar/events', ['as' => 'calendar.events', 'uses' => 'CalendarController@composeEventsArray']);
+
+	Route::resource('campaigns', 'CampaignController');
 });
 
 

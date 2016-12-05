@@ -4,14 +4,16 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    @yield('meta')
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'SalesConnect') }}</title>
 
     <!-- Styles -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/css/hipster_cards.css">
     <link rel="stylesheet" type="text/css" href="/css/sweetalert.css">
     <link rel="stylesheet" type="text/css" href="/css/datedropper.min.css">
     <link rel="stylesheet" type="text/css" href="/css/timedropper.min.css">
@@ -41,8 +43,8 @@
                 </button>
 
                 <!-- Branding Image -->
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                <a class="navbar-brand" href="{{url('/home')}}">
+                    {{ config('app.name', 'SalesConnect') }}
                 </a>
             </div>
 
@@ -56,8 +58,6 @@
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Authentication Links -->
                     @if (Auth::guest())
-                        <li><a href="{{ url('/login') }}">Login</a></li>
-                        <li><a href="{{ url('/register') }}">Register</a></li>
                     @else
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -113,6 +113,7 @@
     <script type="text/javascript" src="/js/moment.min.js"></script>
     <script type="text/javascript" src="/js/jquery.mask.min.js"></script>
     <script type="text/javascript" src="/js/mustache.min.js"></script>
+    <script type="text/javascript" src="/js/Chart.min.js"></script>
     <script src="/js/sweetalert.min.js"></script>
     <script src="/js/datedropper.min.js"></script>
     <script src="/js/timedropper.min.js"></script>

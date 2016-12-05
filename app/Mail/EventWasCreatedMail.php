@@ -36,6 +36,8 @@ class EventWasCreatedMail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.events.created');
+        $type = $this->event->event_type == 'prepro' ? 'Preproduction' : 'Shoot';
+        $subject = $type . ' - ' . $this->project->client->company_name . ' - ' . $this->event->event_date->format('M d, Y');
+        return $this->view('emails.events.created')->subject($subject);
     }
 }

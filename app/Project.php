@@ -24,7 +24,7 @@ class Project extends Model
     	'title', 'slug', 'length', 'start_date',
     	'end_date', 'air_date', 'c_number', 'isci',
     	'production_free', 'music_track', 'production_promotional',
-    	'youtube_link', 'new_client'
+    	'youtube_link', 'new_client', 'campaign_id'
     ];
 
     protected $dates = ['start_date', 'end_date', 'air_date'];
@@ -60,6 +60,14 @@ class Project extends Model
 
     public function plogs(){
         return $this->hasMany(\App\PLog::class);
+    }
+
+    public function videos(){
+        return $this->hasMany(\App\Youtube::class);
+    }
+
+    public function campaign(){
+        return $this->belongsTo(\App\Campaign::class);
     }
     
 }

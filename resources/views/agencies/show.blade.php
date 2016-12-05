@@ -73,7 +73,7 @@
 		    		    		    	      	<td>{{ $client->contact_full_name }}</td>
 		    		    		    	      	<td>{{ $client->primary_contact_phone }}</td>
 		    		    		    	      	<td>{{ $client->primary_contact_email }}</td>
-		    		    		    	      	<td>3</td>
+		    		    		    	      	<td>{{ $client->projects->count() }}</td>
 		    		    		    	    </tr>
 	    		    		    	    @endforeach
 	    		    		    	</tbody>

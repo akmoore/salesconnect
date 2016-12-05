@@ -22,7 +22,11 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\Orders\UpdateDates'
         ],
         'App\Events\CalendarEventCreated' => [
-            'App\Listeners\Calendar\SendEmail'
+            'App\Listeners\Calendar\SendEmail',
+            'App\Listeners\Calendar\UpdateOrderTotal'
+        ],
+        'App\Events\CalendarEventDeleted' => [
+            'App\Listeners\Calendar\UpdateOrderTotalOnDelete'
         ],
         'App\Events\NoteWasCreatedOrUpdated' => [
             'App\Listeners\Notes\SendNotesEmail'
@@ -40,6 +44,10 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\Project\CalendarEventOccured',
             'App\Listeners\Project\NoteEventOccured',
             'App\Listeners\Project\ProgressEventOccured'
+        ],
+        'App\Events\YouTube\YoutubeVideoAdded' => [
+            'App\Listeners\YouTube\SendYoutubeEmailEvent',
+            'App\Listeners\YouTube\SetISCI'
         ]
     ];
 

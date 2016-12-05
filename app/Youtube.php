@@ -8,7 +8,7 @@ class Youtube extends Model
 {
     protected $fillable = [
     	'title', 'description', 'link',
-    	'emailed'
+    	'emailed', 'email_list', 'project_id'
     ];
 
     // Relationships

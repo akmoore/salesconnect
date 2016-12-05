@@ -5,6 +5,7 @@ namespace App\SalesConnect\Helpers\Repositories;
 use Storage;
 use App\Project;
 use App\Note;
+use App\Client;
 use Carbon\Carbon;
 use App\Events\ProjectWasCreated;
 use App\Events\Project\LogActivity;
@@ -17,10 +18,12 @@ class ProjectRepo implements ProjectInterface{
 
 	protected $project;
 	protected $note;
+	protected $client;
 
-	public function __construct(Project $project, Note $note){
+	public function __construct(Project $project, Note $note, Client $client){
 		$this->project = $project;
 		$this->note = $note;
+		$this->client = $client;
 	}
 
 	public function showAll(){
@@ -28,7 +31,7 @@ class ProjectRepo implements ProjectInterface{
 	}
 
 	public function showRecord($id){
-		return $this->project->with('client.aes.manager', 'notes', 'progress')->whereSlug($id)->firstOrFail();
+		return $this->project->with('client.aes.manager', 'notes', 'progress', 'campaign')->whereSlug($id)->firstOrFail();
 	}
 
 	public function createRecord($request){
@@ -45,8 +48,10 @@ class ProjectRepo implements ProjectInterface{
 		// $newComments = preg_replace('/{%.+%}/', '', $event->request['notes']);
 
 		$pd = $this->produceDate($request['air_date']);
+		$ci = $this->getClientInitials($request['client_id']);
 		$project = $this->project->create([
 			'client_id' => $request['client_id'],
+			'campaign_id' => $request['campaign_id'],
 			'title' => $request['title'],
 			'active' => 1,
 			'new_client' => $request['new_client'],
@@ -55,6 +60,7 @@ class ProjectRepo implements ProjectInterface{
 			'production_free' => $request['production_free'],
 			'production_promotional' => $request['production_promotional'],
 			'air_date' => Carbon::createFromDate($pd[2], $pd[0], $pd[1], 'America/Chicago'),
+			'isci' => $ci.'_'.ucfirst(camel_case($request['title'])).'_'.\Carbon\Carbon::now()->year.'_HD'
 		]);
 
 
@@ -127,6 +133,12 @@ class ProjectRepo implements ProjectInterface{
 
 	private function getFilePath($file){
 		return 'videos/'.$file;
+	}
+
+	private function getClientInitials($id){
+		$client = $this->client->find($id);
+		$initials_array = collect(explode(' ', $client->company_name))->map(function($title){return $title[0];})->toArray();
+		return implode('',$initials_array);
 	}
 
 }

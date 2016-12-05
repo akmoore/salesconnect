@@ -39,6 +39,8 @@ class OrderRepo implements OrderInterface{
 	public function updateRecord($request, $id){
 		$oldOrder = $this->showRecord($id);
 		$order = $this->showRecord($id);
+		$project = $this->project->with('events')->whereId($request->project_id)->first();
+		$orderTotal = $this->getTotalWorkAmount($project, $request);
 
 		$order->update([
 			'project_id' => $request['project_id'],
@@ -51,10 +53,12 @@ class OrderRepo implements OrderInterface{
 			'crawl' => $request['crawl'],
 			'ftp' => $request['ftp'],
 			'music_library' => $request['music_library'],
-			'discount' => $request['discount']
+			'discount' => $request['discount'],
+			'order_total' => $orderTotal
 		]);
 
 		event(new OrderWasUpdated($oldOrder, $request->all()));
+		
 
 		return $order;
 	}
@@ -74,5 +78,6 @@ class OrderRepo implements OrderInterface{
 		return $this->poFields($proj, $ord);
 		// return ['project' => $proj, 'order' => $ord];
 	}
+
 
 }

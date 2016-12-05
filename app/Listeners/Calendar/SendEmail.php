@@ -28,20 +28,23 @@ class SendEmail
      */
     public function handle(CalendarEventCreated $event)
     {
-        // dd($event->event->event_type);
-        switch ($event->event->event_type) {
-            case 'prepro':
-            case 'shoot':
-                $emails = $this->getEmails($event->project);
-                foreach($emails as $email){
-                    \Mail::to($email['email'])->queue(new EventWasCreatedMail($event->event, $event->project, $email));
-                }
-                break;
-            
-            default:
-                # code...
-                break;
+        // dd([$event->request->emailable, is_numeric($event->request->emailable)]);
+        if($event->request->emailable == 1){
+            switch ($event->event->event_type) {
+                case 'prepro':
+                case 'shoot':
+                    $emails = $this->getEmails($event->project);
+                    foreach($emails as $email){
+                        \Mail::to($email['email'])->queue(new EventWasCreatedMail($event->event, $event->project, $email));
+                    }
+                    break;
+                
+                default:
+                    # code...
+                    break;
+            }
         }
+        
     }
 
     public function getEmails($project){

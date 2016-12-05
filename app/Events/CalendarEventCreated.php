@@ -15,16 +15,18 @@ class CalendarEventCreated
 
     public $event;
     public $project;
+    public $request;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($event, $project)
+    public function __construct($event, $project, $request)
     {
         $this->event = $event;
         $this->project = $project;
+        $this->request = $request;
     }
 
     /**
