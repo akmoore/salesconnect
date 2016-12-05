@@ -26,8 +26,10 @@ class ManagerRepo implements ManagerInterface{
 		$manager = $this->manager->create([
 			'first_name' => $request['first_name'],
 			'last_name' => $request['last_name'],
-			'work_phone' => $this->stripPhoneNumber($request['work_phone']),
-			'cell_phone' => $this->stripPhoneNumber($request['cell_phone']),
+			// 'work_phone' => $this->stripPhoneNumber($request['work_phone']),
+			// 'cell_phone' => $this->stripPhoneNumber($request['cell_phone']),
+			'work_phone' => $request['work_phone'],
+			'cell_phone' => $request['cell_phone'],
 			'email' => $request['email'],
 			'team' => $request['team']
 		]);
@@ -40,8 +42,10 @@ class ManagerRepo implements ManagerInterface{
 		$manager->update([
 			'first_name' => $request['first_name'],
 			'last_name' => $request['last_name'],
-			'work_phone' => $this->stripPhoneNumber($request['work_phone']),
-			'cell_phone' => $this->stripPhoneNumber($request['cell_phone']),
+			// 'work_phone' => $this->stripPhoneNumber($request['work_phone']),
+			// 'cell_phone' => $this->stripPhoneNumber($request['cell_phone']),
+			'work_phone' => $request['work_phone'],
+			'cell_phone' => $request['cell_phone'],
 			'email' => $request['email'],
 			'team' => $request['team']
 		]);
