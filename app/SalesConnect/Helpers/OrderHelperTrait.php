@@ -87,7 +87,7 @@ trait OrderHelperTrait {
 
 	private function getManager($proj){
 		$returnArray = [];
-		$managers = $proj->client->aes->map(function($ae){return $ae->manager;})->map(function($manager){return $manager->full_name;});
+		$managers = $proj->client->aes->map(function($ae){return $ae->manager;})->map(function($manager){return $manager->full_name;})->unique();
 		foreach ($managers as $key => $manager) {
 			if($key == $managers->count() - 1){
 				$returnArray[] = $manager;
