@@ -44,7 +44,7 @@ class SendYoutubeEmailEvent
         $emailArray = [
             'kmoore@brproud.com',
             $project->client->primary_contact_email,
-            $project->client->agency->contact_email,
+            $project->client->agency ? $project->client->agency->contact_email : null,
             $aes
         ];
 
@@ -52,6 +52,6 @@ class SendYoutubeEmailEvent
             $emailArray[] = $value;
         }
 
-        return collect($emailArray)->filter(function($email){return $email != '';})->flatten();
+        return collect($emailArray)->filter(function($email){return $email != '' || $email != null;})->flatten();
     }
 }
