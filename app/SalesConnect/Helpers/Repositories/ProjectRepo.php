@@ -84,7 +84,8 @@ class ProjectRepo implements ProjectInterface{
 			'production_free' => $request['production_free'],
 			'production_promotional' => $request['production_promotional'],
 			'air_date' => (string)$airDate[2].'-'.(string)$airDate[0].'-'.(string)$airDate[1],
-			'end_date' => (string)$endDate[2].'-'.(string)$endDate[0].'-'.(string)$endDate[1],//was set to null, because progress should set it once project is done.
+			'end_date' => $request['end_date'] != '' ? (string)$endDate[2].'-'.(string)$endDate[0].'-'.(string)$endDate[1]
+													 : null,//was set to null, because progress should set it once project is done.
 			'c_number' => $request['c_number'],
 			'isci' => $request['isci'],
 			'music_track' => $request['music_track'],
